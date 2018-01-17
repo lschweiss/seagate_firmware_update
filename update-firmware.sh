@@ -4,6 +4,8 @@ disks=`cat disk-list`
 
 firmware='MegalodonES3-SAS-STD-E007.LOD'
 
+sg_buffer_write="/opt/ozmt/bin/SunOS/sg_write_buffer"
+
 mkdir -p /tmp/firmware
 
 rm -f /tmp/firmware/success-disks
@@ -46,7 +48,7 @@ for disk in $disks;do
         
         # Try to update firmware
 
-        /opt/ozmt/bin/SunOS/sg_write_buffer -b 4k -v -m 7 -I ${firmware} /dev/rdsk/${disk}s2 \
+        $sg_buffer_write -b 4k -v -m 7 -I ${firmware} /dev/rdsk/${disk}s2 \
             1>/tmp/firmware/${disk}.update_${epath}_out  2>/tmp/firmware/${disk}.update_${epath}_error
         if [ $? -eq 0 ]; then
             # Success.
