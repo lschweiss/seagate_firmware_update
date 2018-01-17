@@ -10,8 +10,11 @@ Modify the variables at the top of the script to point to a firmware image and t
 Create a 'disk-list' file with the names of the disks to be updated with one disk per line.  Such as:
 
 c0t5000C500629AD01Fd0
+
 c0t5000C500629A4FFBd0
+
 c0t5000C500629A516Fd0
+
 c0t5000C500629A5947d0
 
 Run the script.
