@@ -13,6 +13,9 @@ rm -f /tmp/firmware/failed-disks
 
 set -x
 for disk in $disks;do
+    
+    echo -n "Updating: $disk "
+    
     # Collect paths
     mpathadm show logical-unit /dev/rdsk/${disk}s2 |grep "Initiator Port Name:" | awk -F ":  " '{print $2}' > /tmp/firmware/${disk}.initports
     readarray iport < /tmp/firmware/${disk}.initports
@@ -52,6 +55,7 @@ for disk in $disks;do
             1>/tmp/firmware/${disk}.update_${epath}_out  2>/tmp/firmware/${disk}.update_${epath}_error
         if [ $? -eq 0 ]; then
             # Success.
+            echo "success"
             success=1
             echo $disk >> /tmp/firmware/success-disks
             # Break out of while loop
@@ -69,7 +73,8 @@ for disk in $disks;do
     done
 
     if [ $success -eq 0 ]; then
-       echo $disk >> /tmp/firmware/failed-disks
+        echo $disk >> /tmp/firmware/failed-disks
+        echo "FAILED"
     fi
 
 done
