@@ -11,7 +11,6 @@ mkdir -p /tmp/firmware
 rm -f /tmp/firmware/success-disks
 rm -f /tmp/firmware/failed-disks
 
-set -x
 for disk in $disks;do
     
     echo -n "Updating: $disk "
