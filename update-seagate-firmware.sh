@@ -3,7 +3,7 @@
 die () {
     echo $1
     exit 1
-fi
+}
 
 # show function usage
 show_usage() {
@@ -31,11 +31,11 @@ done
 
 [ "$(uname)" == "SunOS" ] || die "This only runs on Illumos or Solaris"
 
-which sg_buffer_write 1>/dev/null 2>/dev/null || die "sg_buffer_write is not in excution search PATH"
+which sg_write_buffer 1>/dev/null 2>/dev/null || die "sg_write_buffer is not in excution search PATH"
 
 [ -f $firmware ] || die "Could not locate firmware file at: $firmware" 
 
-[ -f /dev/rdsk/${disk}s2 ] || die "Disk not found: /dev/rdsk/${disk}s2"
+[ -L /dev/rdsk/${disk}s2 ] || die "Disk not found: /dev/rdsk/${disk}s2"
 
 mkdir -p /tmp/firmware
 
@@ -77,7 +77,7 @@ while [ $epath -le $paths ]; do
     
     # Try to update firmware
 
-    $sg_buffer_write -b 4k -v -m 7 -I ${firmware} /dev/rdsk/${disk}s2 \
+    sg_write_buffer -b 4k -v -m 7 -I ${firmware} /dev/rdsk/${disk}s2 \
         1>/tmp/firmware/${disk}.update_${epath}_out  2>/tmp/firmware/${disk}.update_${epath}_error
     if [ $? -eq 0 ]; then
         # Success.

@@ -3,7 +3,7 @@
 die () {
     echo $1
     exit 1
-fi
+}
 
 # show function usage
 show_usage() {
@@ -34,7 +34,7 @@ done
 
 [ "$(uname)" == "SunOS" ] || die "This only runs on Illumos or Solaris"
 
-which sg_buffer_write 1>/dev/null 2>/dev/null || die "sg_buffer_write is not in execution search PATH"
+which sg_write_buffer 1>/dev/null 2>/dev/null || die "sg_write_buffer is not in execution search PATH"
 
 which parallel 1>/dev/null 2>/dev/null || die "gnu parallel is not in execution search PATH"
 
@@ -47,5 +47,5 @@ mkdir -p /tmp/firmware
 rm -f /tmp/firmware/success-disks
 rm -f /tmp/firmware/failed-disks
 
-cat disk_list | parallel ${jobs} --eta --output-as-files ./update-firmware.sh -f ${firmware} -d {} 
+cat $disk_list | parallel ${jobs} --eta ./update-seagate-firmware.sh -f ${firmware} -d {} 
 
